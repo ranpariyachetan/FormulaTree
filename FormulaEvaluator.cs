@@ -8,24 +8,24 @@ namespace FormaulaTree
         // 2. Produce an answer to the input string.
         private static List<string> operators = new List<string> {"+", "-", "*", "/"};
 
-        public string Data {get;set;}
-        public TreeNode Left {get;set;}
-        public TreeNode Right {get;set;}
+        public string? Data {get;set;}
+        public TreeNode? Left {get;set;}
+        public TreeNode? Right {get;set;}
 
         public double Calculate()
         {
-            if(!operators.Contains(Data))
+            if( Data != null && !operators.Contains(Data))
             {
                 return Convert.ToDouble(Data);
             }
 
-            var l = Left.Calculate();
-            var r = Right.Calculate();
+            var l = Left == null ? 0 : Left.Calculate();
+            var r = Right == null ? 0 : Right.Calculate();
 
             return PerformCalculation(l, r, Data);
         }
 
-        private static double PerformCalculation(double op1, double op2, string oper)
+        private static double PerformCalculation(double op1, double op2, string? oper)
         {
             switch (oper)
             {
@@ -51,7 +51,6 @@ namespace FormaulaTree
             var nodeStack = new Stack<TreeNode>();
 
             input = $"({input})";
-            double answer = 0;
             for(var i = 0;i<input.Length;i++)
             {
                 var c = input[i];
