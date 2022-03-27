@@ -2,6 +2,10 @@ namespace FormaulaTree
 {
     public class TreeNode
     {
+        // given an input string with basic math operations + - * / n whole numbers (both positive and negative)
+        // you must
+        // 1. Convert the input string into a binary tree.
+        // 2. Produce an answer to the input string.
         private static List<string> operators = new List<string> {"+", "-", "*", "/"};
 
         public string Data {get;set;}
