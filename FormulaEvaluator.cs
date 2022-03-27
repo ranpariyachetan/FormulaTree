@@ -1,5 +1,11 @@
 namespace FormaulaTree
 {
+    public class TreeNode
+    {
+        public string Data {get;set;}
+        public TreeNode Left {get;set;}
+        public TreeNode Right {get;set;}
+    }
     public class FormaulaEvaluator
     {
         private static List<char> operators = new List<char> {'+', '-', '*', '/'};
@@ -7,6 +13,7 @@ namespace FormaulaTree
         public double EvaluateFormula(string input)
         {
             var stk = new Stack<string>();
+            var nodeStack = new Stack<TreeNode>();
 
             input = $"({input})";
             double answer = 0;
@@ -18,6 +25,7 @@ namespace FormaulaTree
                     if(operators.Contains(c))
                     {
                         stk.Push(c.ToString());
+                        nodeStack.Push(new TreeNode{ Data = c.ToString()});
                     }
                     else if(c == '(')
                     {
@@ -34,6 +42,7 @@ namespace FormaulaTree
                         }
                         i = j-1;
                         stk.Push(d.ToString());
+                        nodeStack.Push(new TreeNode{ Data = d.ToString()});
                     }
                     else if(c == ')')
                     {
@@ -43,18 +52,38 @@ namespace FormaulaTree
                             var op = stk.Pop();
                             var op1 = Convert.ToDouble( stk.Pop());
 
+                            var op2Node = nodeStack.Pop();
+                            var opNode = nodeStack.Pop();
+                            var op1Node = nodeStack.Pop();
+
+                            opNode.Left = op1Node;
+                            opNode.Right = op2Node;
+
                             answer = PerformCalculation(op2, op1, op);
 
                             if(stk.Peek() == "(")
                             {
                                 stk.Pop();
-                                stk.Push(answer.ToString());    
+                                stk.Push(answer.ToString());
+                                nodeStack.Push(opNode);
                                 break;
                             }
                         }
                     }
                 }
             }
+
+            if(nodeStack.Count==3)
+            {
+                var op2Node = nodeStack.Pop();
+                var opNode = nodeStack.Pop();
+                var op1Node = nodeStack.Pop();
+                opNode.Left = op1Node;
+                opNode.Right = op2Node;
+                nodeStack.Push(opNode);
+            }
+
+            var node = nodeStack.Pop();
 
             return Convert.ToDouble(stk.Pop());
         }
