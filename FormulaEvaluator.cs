@@ -2,17 +2,48 @@ namespace FormaulaTree
 {
     public class TreeNode
     {
+        private static List<string> operators = new List<string> {"+", "-", "*", "/"};
+
         public string Data {get;set;}
         public TreeNode Left {get;set;}
         public TreeNode Right {get;set;}
+
+        public double Calculate()
+        {
+            if(!operators.Contains(Data))
+            {
+                return Convert.ToDouble(Data);
+            }
+
+            var l = Left.Calculate();
+            var r = Right.Calculate();
+
+            return PerformCalculation(l, r, Data);
+        }
+
+        private static double PerformCalculation(double op1, double op2, string oper)
+        {
+            switch (oper)
+            {
+                case "+":
+                    return op1 + op2;
+                case "-":
+                    return op1 - op2;
+                case "*":
+                    return op1 * op2;
+                case "/":
+                    return op1 / op2;
+                default:
+                    return 0;
+            }
+        }
     }
     public class FormaulaEvaluator
     {
         private static List<char> operators = new List<char> {'+', '-', '*', '/'};
 
-        public double EvaluateFormula(string input)
+        public TreeNode CreateTree(string input)
         {
-            var stk = new Stack<string>();
             var nodeStack = new Stack<TreeNode>();
 
             input = $"({input})";
@@ -24,12 +55,11 @@ namespace FormaulaTree
                 {
                     if(operators.Contains(c))
                     {
-                        stk.Push(c.ToString());
                         nodeStack.Push(new TreeNode{ Data = c.ToString()});
                     }
                     else if(c == '(')
                     {
-                        stk.Push(c.ToString());
+                        continue;
                     }
                     else if(Char.IsNumber(c))
                     {
@@ -40,35 +70,18 @@ namespace FormaulaTree
                             d = (d * 10) + Convert.ToDouble(input[j].ToString());
                             j++;
                         }
-                        i = j-1;
-                        stk.Push(d.ToString());
+                        i = j - 1;
                         nodeStack.Push(new TreeNode{ Data = d.ToString()});
                     }
                     else if(c == ')')
                     {
-                        while(stk.Count > 0)
-                        {
-                            var op2 = Convert.ToDouble(stk.Pop());
-                            var op = stk.Pop();
-                            var op1 = Convert.ToDouble( stk.Pop());
+                        var op2Node = nodeStack.Pop();
+                        var opNode = nodeStack.Pop();
+                        var op1Node = nodeStack.Pop();
 
-                            var op2Node = nodeStack.Pop();
-                            var opNode = nodeStack.Pop();
-                            var op1Node = nodeStack.Pop();
-
-                            opNode.Left = op1Node;
-                            opNode.Right = op2Node;
-
-                            answer = PerformCalculation(op2, op1, op);
-
-                            if(stk.Peek() == "(")
-                            {
-                                stk.Pop();
-                                stk.Push(answer.ToString());
-                                nodeStack.Push(opNode);
-                                break;
-                            }
-                        }
+                        opNode.Left = op1Node;
+                        opNode.Right = op2Node;
+                        nodeStack.Push(opNode);
                     }
                 }
             }
@@ -85,7 +98,7 @@ namespace FormaulaTree
 
             var node = nodeStack.Pop();
 
-            return Convert.ToDouble(stk.Pop());
+            return node;
         }
 
         private static double PerformCalculation(double op1, double op2, string oper)
