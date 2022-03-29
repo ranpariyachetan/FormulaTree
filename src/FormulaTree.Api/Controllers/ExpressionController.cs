@@ -9,6 +9,11 @@ namespace FormulaTree.Api.Controllers;
 [Route("api/expr")]
 public class ExpressionController : ControllerBase
 {
+    /// <summary>
+    /// Retuns tree and evaluated value of input expression.
+    /// </summary>
+    /// <param name="model">Model object containing expression.</param>
+    /// <returns>Json with expression result and tree representation of expression.</returns>
     [Route("tree")]
     [HttpPost]
     public ActionResult ToTree([FromBody]ExpressionModel model)
@@ -19,7 +24,7 @@ public class ExpressionController : ControllerBase
         }
 
         var evaluator = new ExpressionEvaluator();
-        var node = evaluator.ConvertToTree(model.Expression);
+        var node = evaluator.ConvertToTree(model.Expression == null ? "" : model.Expression);
 
         var answer = node.Calculate();
         var options = new JsonSerializerOptions

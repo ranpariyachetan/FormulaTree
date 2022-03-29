@@ -4,8 +4,13 @@ namespace FormaulaTree.Api.Services;
 
 public class ExpressionEvaluator
 {
-    public TreeNode ConvertToTree(string expression)
+    public TreeNode ConvertToTree(string? expression)
     {
+        if (expression == null || expression.Length == 0)
+        {
+            return new TreeNode { Data = "0" };
+        }
+
         var nodeStack = new Stack<TreeNode>();
 
         expression = $"({expression})";
@@ -14,12 +19,12 @@ public class ExpressionEvaluator
         for (var i = 0; i < expression.Length; i++)
         {
             var c = expression[i].ToString().Trim();
-            
+
             if (c != "")
             {
                 if (TreeNode.Operators.Contains(c))
                 {
-                    if(opFound)
+                    if (opFound)
                     {
                         sign = c.ToString();
                     }
@@ -45,7 +50,7 @@ public class ExpressionEvaluator
                     }
                     i = j - 1;
                     opFound = false;
-                    if(sign == "-")
+                    if (sign == "-")
                     {
                         d = d * -1;
                         sign = "";
