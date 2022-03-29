@@ -19,13 +19,13 @@ public class ExpressionEvaluator
             {
                 if (TreeNode.Operators.Contains(c))
                 {
-                    nodeStack.Push(new TreeNode { Data = c.ToString() });
                     if(opFound)
                     {
                         sign = c.ToString();
                     }
                     else
                     {
+                        nodeStack.Push(new TreeNode { Data = c.ToString() });
                         opFound = true;
                     }
                 }
@@ -33,7 +33,6 @@ public class ExpressionEvaluator
                 {
                     opFound = false;
                     continue;
-
                 }
                 else if (Char.IsNumber(c, 0))
                 {
