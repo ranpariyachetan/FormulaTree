@@ -8,11 +8,11 @@ using FormaulaTree.Api.Models;
 namespace FormulaTree.Tests;
 
 [TestClass]
-public class UnitTest1
+public class ExpressionEvaluatorTests
 {
     [DataTestMethod]
     [DynamicData(nameof(GetData), DynamicDataSourceType.Method)]
-    public void TestMethod1(string input, double expected)
+    public void TestConvertToTree(string input, double expected)
     {
         var evaulator = new ExpressionEvaluator();
 
