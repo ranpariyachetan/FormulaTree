@@ -18,4 +18,10 @@
     <ProjectReference Include="..\FormulaTree.Api\FormulaTree.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
