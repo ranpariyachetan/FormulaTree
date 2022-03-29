@@ -9,6 +9,8 @@ public class ExpressionEvaluator
         var nodeStack = new Stack<TreeNode>();
 
         expression = $"({expression})";
+        var opFound = false;
+        var sign = "";
         for (var i = 0; i < expression.Length; i++)
         {
             var c = expression[i].ToString().Trim();
@@ -18,10 +20,20 @@ public class ExpressionEvaluator
                 if (TreeNode.Operators.Contains(c))
                 {
                     nodeStack.Push(new TreeNode { Data = c.ToString() });
+                    if(opFound)
+                    {
+                        sign = c.ToString();
+                    }
+                    else
+                    {
+                        opFound = true;
+                    }
                 }
                 else if (c == "(")
                 {
+                    opFound = false;
                     continue;
+
                 }
                 else if (Char.IsNumber(c, 0))
                 {
@@ -33,6 +45,13 @@ public class ExpressionEvaluator
                         j++;
                     }
                     i = j - 1;
+                    opFound = false;
+                    if(sign == "-")
+                    {
+                        d = d * -1;
+                        sign = "";
+                        opFound = false;
+                    }
                     nodeStack.Push(new TreeNode { Data = d.ToString() });
                 }
                 else if (c == ")")
@@ -44,6 +63,7 @@ public class ExpressionEvaluator
                     opNode.Left = op1Node;
                     opNode.Right = op2Node;
                     nodeStack.Push(opNode);
+                    opFound = false;
                 }
             }
         }
