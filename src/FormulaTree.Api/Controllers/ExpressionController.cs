@@ -34,6 +34,8 @@ public class ExpressionController : ControllerBase
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        return new JsonResult(new {Answer = answer, Tree = node}, options);
+        var obj = TreeNode.ToDictionary(node);
+
+        return new JsonResult(new {Answer = answer, Tree = TreeNode.ToDictionary(node)}, options);
     }
 }
