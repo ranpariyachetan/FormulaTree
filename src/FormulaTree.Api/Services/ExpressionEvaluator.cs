@@ -24,14 +24,21 @@ public class ExpressionEvaluator
             {
                 if (TreeNode.Operators.Contains(c))
                 {
-                    if (opFound)
+                    if(nodeStack.Count == 0)
                     {
                         sign = c.ToString();
                     }
-                    else
+                    else 
                     {
-                        nodeStack.Push(new TreeNode { Data = c.ToString() });
-                        opFound = true;
+                        if (opFound)
+                        {
+                            sign = c.ToString();
+                        }
+                        else
+                        {
+                            nodeStack.Push(new TreeNode { Data = c.ToString() });
+                            opFound = true;
+                        }
                     }
                 }
                 else if (c == "(")
