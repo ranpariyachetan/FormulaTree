@@ -21,3 +21,32 @@
   ```
 * Click *Execute* button.
 * Observe the outcome in the Response body.
+* Example 
+*   Request
+  ```
+  {
+    "expression": "(6 * 4) + (150 / 3)"
+  }
+  ```
+*   Response
+  ```
+  {
+    "Answer": 74,
+    "Tree": {
+      "+": [
+        {
+          "*": [
+            "6",
+            "4"
+          ]
+        },
+        {
+          "/": [
+            "150",
+            "3"
+          ]
+        }
+      ]
+    }
+  }
+  ```
