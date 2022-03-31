@@ -1,6 +1,6 @@
 # How to test this code?
 
-* Clode this repo to local machine.
+* Clone this repo to local machine.
 * Open command prompt or terminal.
 * Navigate to `src` folder.
 * Run command 
